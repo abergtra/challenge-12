@@ -4,6 +4,7 @@
   "description": "Employee tracker",
   "main": "server.js",
   "dependencies": {
+    "mysql": "^2.18.1",
     "mysql2": "^2.3.0"
   },
   "devDependencies": {},
