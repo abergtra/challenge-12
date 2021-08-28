@@ -9,16 +9,46 @@ const validate = require('./javascript/validate');
 
 //Connect to database and present title
 connection.connect((error) => {
-    if (error) throw error;
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(``);
-    console.log(chalk.greenBright.bold(figlet.textSync('Employee Tracker')));
-    console.log(``);
-    console.log(`                                                          ` + chalk.greenBright.bold('Created By: Asher Bergtraun'));
-    console.log(``);
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log("promptUser()");
-  });
+  if (error) throw error;
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(``);
+  console.log(chalk.greenBright.bold(figlet.textSync('Employee Tracker')));
+  console.log(``);
+  console.log(`                                                          ` + chalk.greenBright.bold('Created By: Asher Bergtraun'));
+  console.log(``);
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  //call function to prompt user actions
+  promptUser();
+});
+
+//Funtion to prompt user with possible actions
+const promptUser = () => {
+  inquirer.prompt([
+    {
+      name: 'actions',
+      type: 'list',
+      message: 'What would you like to do?',
+      choices: [
+      'View all departments',
+      'View all roles',
+      'View all employees',
+      'View employees by manager',
+      'View employees by department',
+      'View the total utilized budget of a department',
+      'Add a department',
+      'Add a role',
+      'Add an employee',
+      'Delete a department',
+      'Delete a role',
+      'Delete an employee',
+      'Update employee manager',
+      'Update employee role',
+      'Exit'
+      ]
+//add a department, add a role, add an employee, and update an employee role
+    }
+  ])
+}
 
 
 // IF WE WANTED TO ADD PORTS
