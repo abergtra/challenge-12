@@ -98,16 +98,82 @@ const promptUser = () => {
 }
 
 // Function to 'View all departments'
+const viewAllDepartments = () => {
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(`                              ` + chalk.green.bold(`All Departments:`));
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  const sql = `SELECT`;
+  connection.promise().query(sql, (error, response) => {
+    if (error) throw error;
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    promptUser();
+  });
+};  
 
 // Function to 'View all roles'
+const viewAllRoles = () => {
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(`                              ` + chalk.green.bold(`All Roles:`));
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  const sql = `SELECT`;
+  connection.promise().query(sql, (error, response) => {
+    if (error) throw error;
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    promptUser();
+  });
+};  
 
 // Function to 'View all employees'
+const viewAllEmployees = () => {
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(`                              ` + chalk.green.bold(`All Employees:`));
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  const sql = `SELECT`;
+  connection.promise().query(sql, (error, response) => {
+    if (error) throw error;
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    promptUser();
+  });
+};  
 
 // Function to 'View employees by manager'
+const viewEmployeesByManager = () => {
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(`                              ` + chalk.green.bold(`Employees by Manager:`));
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  const sql = `SELECT`;
+  connection.promise().query(sql, (error, response) => {
+    if (error) throw error;
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    promptUser();
+  });
+};  
 
 // Function to 'View employees by department'
+const viewEmployeesByDepartment = () => {
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(`                              ` + chalk.green.bold(`Employees by Department:`));
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  const sql = `SELECT`;
+  connection.promise().query(sql, (error, response) => {
+    if (error) throw error;
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    promptUser();
+  });
+};  
 
 // Function to 'View the total utilized budget of a department'
+const viewUtilizedBudget = () => {
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(`                              ` + chalk.green.bold(`Department Total Utilized Budget:`));
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  const sql = `SELECT`;
+  connection.promise().query(sql, (error, response) => {
+    if (error) throw error;
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    promptUser();
+  });
+};  
 
 // Function to 'Add a department'
 
