@@ -1,5 +1,5 @@
 //require mysql and inquirer
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const inquirer = require('inquirer');
 
 //connect to mysql
@@ -23,8 +23,8 @@ const util = require('util');
 //Make all connection queries promises
 connection.query = util.promisify(connection.query);
 //Connect to database and present title
-connection.connect((error) => {
-  if (error) throw error;
+connection.connect((err) => {
+  if (err) throw err;
   console.log(chalk.yellow.bold(`====================================================================================`));
   console.log(``);
   console.log(chalk.greenBright.bold(figlet.textSync('Employee Tracker')));
@@ -113,19 +113,23 @@ const promptUser = () => {
 }
 
 // Function to 'View all departments'
-const viewAllDepartments = () => {
-  let sql = `SELECT department.id AS id, department.department_name AS department 
-            FROM department
-            ORDER BY department.id ASC`;
-  connection.promise().query(sql, (error, response) => {
-    if (error) throw error;
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`                              ` + chalk.green.bold(`All Departments:`));
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.table(response);
-    console.log(chalk.yellow.bold(`====================================================================================`));
+const viewAllDepartments = async () => {
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(`                              ` + chalk.green.bold(`All Departments:`));
+  console.log(chalk.yellow.bold(`====================================================================================`));   
+  try{
+    let sql = `SELECT * FROM department`;
+    connection.query(sql, (err, res) => {
+      if (err) throw err;
+      let departmentArray = [];
+      res.forEach(department => departmentArray.push(department));
+      console.table(departmentArray);
+      console.log(chalk.yellow.bold(`====================================================================================`));
+    });
+  } catch (err) {
+    console.log(err);
     promptUser();
-  });
+  }
 };  
 
 // Function to 'View all roles'
@@ -134,8 +138,8 @@ const viewAllRoles = () => {
             FROM role
             INNER JOIN department ON role.department_id = department.id
             ORDER BY role.id ASC`;
-  connection.promise().query(sql, (error, response) => {
-    if (error) throw error;
+  connection.query(sql, (err, response) => {
+    if (err) throw err;
     console.log(chalk.yellow.bold(`====================================================================================`));
     console.log(`                              ` + chalk.green.bold(`All Roles:`));
     console.log(chalk.yellow.bold(`====================================================================================`));
@@ -151,8 +155,8 @@ const viewAllEmployees = () => {
             FROM employee, role, department 
             WHERE department.id = role.department_id AND role.id = employee.role_id
             ORDER BY employee.id ASC`;
-  connection.promise().query(sql, (error, response) => {
-    if (error) throw error;
+  connection.query(sql, (err, response) => {
+    if (err) throw err;
     console.log(chalk.yellow.bold(`====================================================================================`));
     console.log(`                              ` + chalk.green.bold(`All Employees:`));
     console.log(chalk.yellow.bold(`====================================================================================`));
@@ -186,8 +190,8 @@ const viewEmployeesByManager = () => {
   console.log(`                              ` + chalk.green.bold(`Employees by Manager:`));
   console.log(chalk.yellow.bold(`====================================================================================`));
   const sql = `SELECT`;
-  connection.promise().query(sql, (error, response) => {
-    if (error) throw error;
+  connection.query(sql, (err, response) => {
+    if (err) throw err;
     console.log(chalk.yellow.bold(`====================================================================================`));
     promptUser();
   });
@@ -199,8 +203,8 @@ const viewEmployeesByDepartment = () => {
   console.log(`                              ` + chalk.green.bold(`Employees by Department:`));
   console.log(chalk.yellow.bold(`====================================================================================`));
   const sql = `SELECT`;
-  connection.promise().query(sql, (error, response) => {
-    if (error) throw error;
+  connection.query(sql, (err, response) => {
+    if (err) throw err;
     console.log(chalk.yellow.bold(`====================================================================================`));
     promptUser();
   });
@@ -213,8 +217,8 @@ const viewUtilizedBudget = () => {
               INNER JOIN department ON role.department_id = department.id 
               GROUP BY  role.department_id
               ORDER BY department.id ASC`;
-  connection.promise().query(sql, (error, response) => {
-    if (error) throw error;
+  connection.query(sql, (err, response) => {
+    if (err) throw err;
     console.log(chalk.yellow.bold(`====================================================================================`));
     console.log(`                              ` + chalk.green.bold(`Departments Total Utilized Budget:`));
     console.log(chalk.yellow.bold(`====================================================================================`));
@@ -222,7 +226,7 @@ const viewUtilizedBudget = () => {
     console.log(chalk.yellow.bold(`====================================================================================`));
     promptUser();
   });
-};  
+}
 
 // Function to 'Add a department'
 
@@ -266,4 +270,4 @@ const viewUtilizedBudget = () => {
 // //Function that will start the Express.js server on port 3001
 // app.listen(PORT, () => {
 //     console.log(`Server running on port ${PORT}`);
-//   });
+//   }

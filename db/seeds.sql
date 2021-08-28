@@ -25,5 +25,5 @@ VALUES
     ('Kelly', 'Manlaibayar', 8, null), 
     ('Brian', 'Chen', 9, null), 
     ('Adam', 'Chinn', 2, 1), 
-    ('Keana', 'Smith', 3, 2);
-    ('Keana', 'Smith', 10, 3);
+    ('Keana', 'Smith', 3, 2),
+    ('Baklava', 'Goodboy', 10, 3);
