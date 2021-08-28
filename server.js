@@ -100,7 +100,8 @@ const promptUser = () => {
 // Function to 'View all departments'
 const viewAllDepartments = () => {
   let sql = `SELECT department.id AS id, department.department_name AS department 
-            FROM department`;
+            FROM department
+            ORDER BY department.id ASC`;
   connection.promise().query(sql, (error, response) => {
     if (error) throw error;
     console.log(chalk.yellow.bold(`====================================================================================`));
@@ -116,7 +117,8 @@ const viewAllDepartments = () => {
 const viewAllRoles = () => {
   let sql = `SELECT role.id, role.title, department.department_name AS department
             FROM role
-            INNER JOIN department ON role.department_id = department.id`;
+            INNER JOIN department ON role.department_id = department.id
+            ORDER BY role.id ASC`;
   connection.promise().query(sql, (error, response) => {
     if (error) throw error;
     console.log(chalk.yellow.bold(`====================================================================================`));
