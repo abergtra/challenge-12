@@ -99,12 +99,13 @@ const promptUser = () => {
 
 // Function to 'View all departments'
 const viewAllDepartments = () => {
-  console.log(chalk.yellow.bold(`====================================================================================`));
-  console.log(`                              ` + chalk.green.bold(`All Departments:`));
-  console.log(chalk.yellow.bold(`====================================================================================`));
-  const sql = `SELECT`;
+  const sql = `SELECT department.id AS id, department.department_name AS department FROM department`;
   connection.promise().query(sql, (error, response) => {
     if (error) throw error;
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.log(`                              ` + chalk.green.bold(`All Departments:`));
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.table(response);
     console.log(chalk.yellow.bold(`====================================================================================`));
     promptUser();
   });
