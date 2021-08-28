@@ -26,3 +26,4 @@ VALUES
     ('Brian', 'Chen', 9, null), 
     ('Adam', 'Chinn', 2, 1), 
     ('Keana', 'Smith', 3, 2);
+    ('Keana', 'Smith', 10, 3);
