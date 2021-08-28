@@ -1,12 +1,27 @@
-//connect to mysql and require inquirer
-const connection = require('./config/connection');
+//require mysql and inquirer
+const mysql = require('mysql');
 const inquirer = require('inquirer');
+
+//connect to mysql
+const connection = mysql.createConnection({
+  multipleStatements: true,   
+  host: 'localhost',
+  port: 3306,
+  user: 'root',
+  password: 'I<3Kelly!',
+  database: 'employee_db'
+});
+
 //require terminal styles
 const chalk = require('chalk');
 const figlet = require('figlet');
-//require validation
+//misc requires
 const validate = require('./javascript/validate');
+const consoleTable = require('console.table');
+const util = require('util');
 
+//Make all connection queries promises
+connection.query = util.promisify(connection.query);
 //Connect to database and present title
 connection.connect((error) => {
   if (error) throw error;
@@ -149,6 +164,24 @@ const viewAllEmployees = () => {
 
 // Function to 'View employees by manager'
 const viewEmployeesByManager = () => {
+  const managerSql = `SELECT `
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'manager',
+      message: "Which manager?",
+      validate: pickManager => {
+        if (pickManager) {
+            return true;
+        } else {
+            console.log('Please enter a first name');
+            return false;
+        }
+      }
+    }
+  ])
+  .then
+
   console.log(chalk.yellow.bold(`====================================================================================`));
   console.log(`                              ` + chalk.green.bold(`Employees by Manager:`));
   console.log(chalk.yellow.bold(`====================================================================================`));
@@ -175,12 +208,17 @@ const viewEmployeesByDepartment = () => {
 
 // Function to 'View the total utilized budget of a department'
 const viewUtilizedBudget = () => {
-  console.log(chalk.yellow.bold(`====================================================================================`));
-  console.log(`                              ` + chalk.green.bold(`Department Total Utilized Budget:`));
-  console.log(chalk.yellow.bold(`====================================================================================`));
-  const sql = `SELECT`;
+  const sql = `SELECT department_id AS id, department.department_name AS department, SUM(salary) AS budget
+              FROM  role  
+              INNER JOIN department ON role.department_id = department.id 
+              GROUP BY  role.department_id
+              ORDER BY department.id ASC`;
   connection.promise().query(sql, (error, response) => {
     if (error) throw error;
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.log(`                              ` + chalk.green.bold(`Departments Total Utilized Budget:`));
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.table(response);
     console.log(chalk.yellow.bold(`====================================================================================`));
     promptUser();
   });
