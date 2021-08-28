@@ -47,6 +47,54 @@ const promptUser = () => {
       ]
     }
   ])
+  .then((answers) => {
+    const {choices} = answers;
+    if (choices === 'View all departments'){
+      viewAllDepartments();
+    }
+    if (choices === 'View all roles'){
+      viewAllRoles();
+    }
+    if (choices === 'View all employees'){
+      viewAllEmployees();
+    }
+    if (choices === 'View employees by manager'){
+      viewEmployeesByManager();
+    }
+    if (choices === 'View employees by department'){
+      viewEmployeesByDepartment();
+    }
+    if (choices === 'View the total utilized budget of a department'){
+      viewUtilizedBudget();
+    }
+    if (choices === 'Add a department'){
+      addDepartment();
+    }
+    if (choices === 'Add a role'){
+      addRole();
+    }
+    if (choices === 'Add an employee'){
+      addEmployee();
+    }
+    if (choices === 'Delete a department'){
+      deleteDepartment();
+    }
+    if (choices === 'Delete a role'){
+      deleteRole();
+    }
+    if (choices === 'Delete an employee'){
+      deleteEmployee();
+    }
+    if (choices === 'Update employee manager'){
+      updateManager();
+    }
+    if (choices === 'Update employee role'){
+      updateRole();
+    }
+    if (choices === 'Exit'){
+      Exit();
+    }
+  })
 }
 
 // Function to 'View all departments'
