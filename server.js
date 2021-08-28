@@ -45,10 +45,42 @@ const promptUser = () => {
       'Update employee role',
       'Exit'
       ]
-//add a department, add a role, add an employee, and update an employee role
     }
   ])
 }
+
+// Function to 'View all departments'
+
+// Function to 'View all roles'
+
+// Function to 'View all employees'
+
+// Function to 'View employees by manager'
+
+// Function to 'View employees by department'
+
+// Function to 'View the total utilized budget of a department'
+
+// Function to 'Add a department'
+
+// Function to 'Add a role'
+
+// Function to 'Add an employee'
+
+// Function to 'Delete a department'
+
+// Function to 'Delete a role'
+
+// Function to 'Delete an employee'
+
+// Function to 'Update employee manager'
+
+// Function to 'Update employee role'
+
+// Function to 'Exit'
+
+
+
 
 
 // IF WE WANTED TO ADD PORTS
