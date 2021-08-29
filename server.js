@@ -237,6 +237,35 @@ const viewUtilizedBudget = () => {
 }
 
 // Function to 'Add a department'
+const addDepartment = () => {
+  inquirer.prompt({
+    name: 'department',
+    type: 'input',
+    message: "What is the new department's name?"
+  })
+  .then(function(answer) {
+    const sql = `INSERT INTO department (name) VALUES ( ? )`;
+    connection.query(sql, andwer.department, function(err, res) {
+      if (err) throw err;
+      console.log(chalk.yellow.bold(`====================================================================================`));
+      console.log(`                              ` + chalk.green.bold(`New Department Added:`));
+      console.log(chalk.yellow.bold(`====================================================================================`));
+      console.log(`${(answer.department).toUpperCase()}.`);
+      console.log(chalk.yellow.bold(`====================================================================================`));
+      viewAllDepartments();
+    })
+  })
+
+  connection.query(sql, (err, res) => {
+    if (err) throw err;
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.log(`                              ` + chalk.green.bold(`Departments Total Utilized Budget:`));
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.table(res);
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    promptUser();
+  });
+}
 
 // Function to 'Add a role'
 
