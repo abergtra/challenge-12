@@ -107,24 +107,25 @@ const promptUser = () => {
       updateRole();
     }
     if (choices === 'Exit'){
-      Exit();
+      connection.end();
     }
   })
 }
 
-// Function to 'View all departments'
+// Function to 'View all departments' using console.table method
 const viewAllDepartments = async () => {
   console.log(chalk.yellow.bold(`====================================================================================`));
   console.log(`                              ` + chalk.green.bold(`All Departments:`));
   console.log(chalk.yellow.bold(`====================================================================================`));   
   try{
-    let sql = `SELECT * FROM department`;
+    const sql = `SELECT * FROM department`;
     connection.query(sql, (err, res) => {
       if (err) throw err;
       let departmentArray = [];
       res.forEach(department => departmentArray.push(department));
       console.table(departmentArray);
       console.log(chalk.yellow.bold(`====================================================================================`));
+      promptUser();
     });
   } catch (err) {
     console.log(err);
@@ -132,38 +133,45 @@ const viewAllDepartments = async () => {
   }
 };  
 
-// Function to 'View all roles'
+// Function to 'View all roles' using console.log method
 const viewAllRoles = () => {
-  let sql = `SELECT role.id, role.title, department.department_name AS department
-            FROM role
-            INNER JOIN department ON role.department_id = department.id
-            ORDER BY role.id ASC`;
-  connection.query(sql, (err, response) => {
-    if (err) throw err;
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`                              ` + chalk.green.bold(`All Roles:`));
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.table(response);
-    console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(`                              ` + chalk.green.bold(`All Roles:`));
+  console.log(chalk.yellow.bold(`====================================================================================`));   
+  try{
+    const sql = `SELECT * FROM role`;
+    connection.query(sql, (err, res) => {
+      if (err) throw err;
+      res.forEach(role => {
+        console.log(`ID: ${role.id} | Title: ${role.title} | Salary: ${role.salary} | Department ID: ${role.department_id}`);
+      })
+      promptUser();
+    })
+  } catch (err) {
+    console.log(err);
     promptUser();
-  });
+  }
 };  
 
 // Function to 'View all employees'
 const viewAllEmployees = () => {
-  let sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.department_name AS 'department', role.salary
-            FROM employee, role, department 
-            WHERE department.id = role.department_id AND role.id = employee.role_id
-            ORDER BY employee.id ASC`;
-  connection.query(sql, (err, response) => {
-    if (err) throw err;
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`                              ` + chalk.green.bold(`All Employees:`));
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.table(response);
-    console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(chalk.yellow.bold(`====================================================================================`));
+  console.log(`                              ` + chalk.green.bold(`All Employees:`));
+  console.log(chalk.yellow.bold(`====================================================================================`));   
+  try{
+    const sql = `SELECT * FROM employee`;
+    connection.query(sql, (err, res) => {
+      if (err) throw err;
+      let employeeArray = [];
+      res.forEach(employee => employeeArray.push(employee));
+      console.table(employeeArray);
+      console.log(chalk.yellow.bold(`====================================================================================`));
+      promptUser();
+    });
+  } catch (err) {
+    console.log(err);
     promptUser();
-  });
+  }
 };  
 
 // Function to 'View employees by manager'
