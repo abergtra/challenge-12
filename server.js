@@ -218,19 +218,19 @@ const viewEmployeesByDepartment = () => {
   });
 };  
 
-// Function to 'View the total utilized budget of a department'
+// Function to 'View the total utilized budget of a department' print whole res method
 const viewUtilizedBudget = () => {
   const sql = `SELECT department_id AS id, department.department_name AS department, SUM(salary) AS budget
               FROM  role  
               INNER JOIN department ON role.department_id = department.id 
               GROUP BY  role.department_id
               ORDER BY department.id ASC`;
-  connection.query(sql, (err, response) => {
+  connection.query(sql, (err, res) => {
     if (err) throw err;
     console.log(chalk.yellow.bold(`====================================================================================`));
     console.log(`                              ` + chalk.green.bold(`Departments Total Utilized Budget:`));
     console.log(chalk.yellow.bold(`====================================================================================`));
-    console.table(response);
+    console.table(res);
     console.log(chalk.yellow.bold(`====================================================================================`));
     promptUser();
   });
