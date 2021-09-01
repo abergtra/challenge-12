@@ -63,50 +63,50 @@ const promptUser = () => {
     }
   ])
   .then((answers) => {
-    const {choices} = answers;
-    if (choices === 'View all departments'){
+    const {actions} = answers;
+    if (actions === 'View all departments'){
       viewAllDepartments();
     }
-    if (choices === 'View all roles'){
+    if (actions === 'View all roles'){
       viewAllRoles();
     }
-    if (choices === 'View all employees'){
+    if (actions === 'View all employees'){
       viewAllEmployees();
     }
-    if (choices === 'View employees by manager'){
+    if (actions === 'View employees by manager'){
       viewEmployeesByManager();
     }
-    if (choices === 'View employees by department'){
+    if (actions === 'View employees by department'){
       viewEmployeesByDepartment();
     }
-    if (choices === 'View the total utilized budget of a department'){
+    if (actions === 'View the total utilized budget of a department'){
       viewUtilizedBudget();
     }
-    if (choices === 'Add a department'){
+    if (actions === 'Add a department'){
       addDepartment();
     }
-    if (choices === 'Add a role'){
+    if (actions === 'Add a role'){
       addRole();
     }
-    if (choices === 'Add an employee'){
+    if (actions === 'Add an employee'){
       addEmployee();
     }
-    if (choices === 'Delete a department'){
+    if (actions === 'Delete a department'){
       deleteDepartment();
     }
-    if (choices === 'Delete a role'){
+    if (actions === 'Delete a role'){
       deleteRole();
     }
-    if (choices === 'Delete an employee'){
+    if (actions === 'Delete an employee'){
       deleteEmployee();
     }
-    if (choices === 'Update employee manager'){
+    if (actions === 'Update employee manager'){
       updateManager();
     }
-    if (choices === 'Update employee role'){
+    if (actions === 'Update employee role'){
       updateRole();
     }
-    if (choices === 'Exit'){
+    if (actions === 'Exit'){
       connection.end();
     }
   })
@@ -255,20 +255,47 @@ const addDepartment = () => {
       viewAllDepartments();
     })
   })
-
-  connection.query(sql, (err, res) => {
-    if (err) throw err;
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`                              ` + chalk.green.bold(`Departments Total Utilized Budget:`));
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    console.table(res);
-    console.log(chalk.yellow.bold(`====================================================================================`));
-    promptUser();
-  });
 }
 
 // Function to 'Add a role'
-
+const addRole = () => {
+  inquirer.prompt({
+    name: 'role',
+    type: 'input',
+    message: "What is the new role's name?"
+  },
+  {
+    name: 'salary',
+    type: 'input',
+    message: "What is the new role's salary?"
+  },
+  {
+    name: 'department',
+    type: 'list',
+    message: "Pick a department to oversee this role:",
+    choices: function() {
+      var choicesArray = [];
+      res.forEach(res => {
+          choicesArray.push(
+              res.name
+          );
+      })
+      return choicesArray;
+    }
+  })
+  .then(function(answer) {
+    const sql = `INSERT INTO role (name) VALUES ( ? )`;
+    connection.query(sql, andwer.role, function(err, res) {
+      if (err) throw err;
+      console.log(chalk.yellow.bold(`====================================================================================`));
+      console.log(`                              ` + chalk.green.bold(`New Role Added:`));
+      console.log(chalk.yellow.bold(`====================================================================================`));
+      console.log(`${(answer.role).toUpperCase()}.`);
+      console.log(chalk.yellow.bold(`====================================================================================`));
+      viewAllDepartments();
+    })
+  })
+}
 // Function to 'Add an employee'
 
 // Function to 'Delete a department'
