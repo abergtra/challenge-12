@@ -375,6 +375,37 @@ const addEmployee = async () => {
 // Function to 'Delete a role'
 
 // Function to 'Delete an employee'
+const deleteEmployee = async () => {
+  try {
+    let employees = await connection.query("SELECT * FROM employee");
+    let pickEmployee = await inquirer.prompt([
+      {
+        name: 'employee',
+        type: 'list',
+        choices: employees.map((thisEmployee) => {
+          return {
+            name: thisEmployee.first_name + ' ' + thisEmployee.last_name,
+            value: thisEmployee.id
+          }
+        }),
+        message: "Pick an existing employee to delete:"
+      }
+    ]);
+
+    let result = await connection.query(`DELETE FROM employee WHERE employee.id = ?`, {id: pickEmployee.employee});
+
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.log(`                              ` + chalk.green.bold(`Employee Deleted:`));
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.log(`Employee ID ${(pickEmployee.employee)} has been successfully deleted.`);
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    viewAllEmployees();
+
+  }  catch (err) {
+    console.log(err);
+    viewAllEmployees();
+  };
+}
 
 // Function to 'Update employee manager'
 const updateManager = async () => {
