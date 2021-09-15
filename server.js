@@ -176,34 +176,21 @@ const viewAllEmployees = () => {
 
 // Function to 'View employees by manager'
 const viewEmployeesByManager = () => {
-  const managerSql = `SELECT `
-  inquirer.prompt([
-    {
-      type: 'input',
-      name: 'manager',
-      message: "Which manager?",
-      validate: pickManager => {
-        if (pickManager) {
-            return true;
-        } else {
-            console.log('Please enter a first name');
-            return false;
-        }
-      }
-    }
-  ])
-  .then
-
   console.log(chalk.yellow.bold(`====================================================================================`));
   console.log(`                              ` + chalk.green.bold(`Employees by Manager:`));
+  console.log(`               ` + chalk.red(`NOTE: employees marked with a "null" manager, are managers.`));
   console.log(chalk.yellow.bold(`====================================================================================`));
-  const sql = `SELECT`;
+  const sql = `SELECT employee.first_name, employee.last_name, employee.manager_id AS manager 
+              FROM employee 
+              LEFT JOIN role ON employee.role_id = role.id 
+              ORDER BY employee.manager_id ASC`;
   connection.query(sql, (err, response) => {
     if (err) throw err;
+    console.table(response);
     console.log(chalk.yellow.bold(`====================================================================================`));
     promptUser();
   });
-};  
+};   
 
 // Function to 'View employees by department'
 const viewEmployeesByDepartment = () => {
