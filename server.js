@@ -392,7 +392,7 @@ const deleteEmployee = async () => {
       }
     ]);
 
-    let result = await connection.query(`DELETE FROM employee WHERE employee.id = ?`, {id: pickEmployee.employee});
+    let result = await connection.query(`DELETE FROM employee WHERE employee.id = ${(pickEmployee.employee)}`);
 
     console.log(chalk.yellow.bold(`====================================================================================`));
     console.log(`                              ` + chalk.green.bold(`Employee Deleted:`));
