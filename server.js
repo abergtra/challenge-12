@@ -314,28 +314,39 @@ const addRole = async () => {
 const addEmployee = async () => {
   try {
     let managers = await connection.query("SELECT * FROM employee");
-
+    let roles = await connection.query("SELECT * FROM role");
     let answer = await inquirer.prompt([
       {
-        name: 'title',
+        name: 'firstName',
         type: 'input',
-        message: "What is the new role's title?"
+        message: "What is the new employee's first name?"
       },
       {
-        name: 'salary',
+        name: 'lastName',
         type: 'input',
-        message: "What is the new role's salary?"
+        message: "What is the new employee's last name?"
       },
       {
-        name: 'departmentID',
+        name: 'empRoleID',
         type: 'list',
-        choices: departments.map((departmentID) => {
+        choices: roles.map((empRoleID) => {
           return {
-            name: departmentID.department_name,
-            value: departmentID.id
+            name: empRoleID.title,
+            value: empRoleID.id
           }
         }),
-        message: "Pick a department to oversee this role:",
+        message: "Pick this new employee's role ID:",
+      },
+      {
+        name: 'employeeManagerID',
+        type: 'list',
+        choices: managers.map((employeeManagerID) => {
+          return {
+            name: employeeManagerID.first_name + ' ' + employeeManagerID.last_name,
+            value: employeeManagerID.id
+          }
+        }),
+        message: "Pick a manager to oversee this new employee:",
       }
     ]);
 
