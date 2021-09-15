@@ -301,7 +301,7 @@ const addRole = async () => {
     console.log(chalk.yellow.bold(`====================================================================================`));
     console.log(`                              ` + chalk.green.bold(`New Role Added:`));
     console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`${(answer.title).toUpperCase()}`);
+    console.log(`${(answer.title)}`);
     console.log(chalk.yellow.bold(`====================================================================================`));
     viewAllRoles();
   }  catch (err) {
@@ -338,40 +338,35 @@ const addEmployee = async () => {
         message: "Pick this new employee's role ID:",
       },
       {
-        name: 'employeeManagerID',
+        name: 'empManagerID',
         type: 'list',
-        choices: managers.map((employeeManagerID) => {
+        choices: managers.map((empManagerID) => {
           return {
-            name: employeeManagerID.first_name + ' ' + employeeManagerID.last_name,
-            value: employeeManagerID.id
+            name: empManagerID.first_name + ' ' + empManagerID.last_name,
+            value: empManagerID.id
           }
         }),
         message: "Pick a manager to oversee this new employee:",
       }
     ]);
 
-    let pickedDept;
-    for (i = 0; i < departments.length; i++){
-      if (departments[i].department_id === answer.choice) {
-        pickedDept = departments[i];
-      };
-    }
-
-    let result = await connection.query("INSERT INTO role SET ?", {
-      title: answer.title,
-      salary: answer.salary,
-      department_id: answer.departmentID
-    })
+    let result = await connection.query("INSERT INTO employee SET ?", {
+      first_name: answer.firstName,
+      last_name: answer.lastName,
+      role_id: (answer.empRoleID),
+      manager_id: (answer.empManagerID)
+    });
 
     console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`                              ` + chalk.green.bold(`New Role Added:`));
+    console.log(`                              ` + chalk.green.bold(`New Employee Added:`));
     console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`${(answer.title).toUpperCase()}`);
+    console.log(`Welcome ${(answer.firstName)} ${(answer.lastName)}!`);
     console.log(chalk.yellow.bold(`====================================================================================`));
-    viewAllRoles();
+    viewAllEmployees();
+    
   }  catch (err) {
     console.log(err);
-    viewAllRoles();
+    viewAllEmployees();
   };
 }
 
