@@ -390,34 +390,34 @@ const updateManager = async () => {
             value: thisEmployee.id
           }
         }),
-        message: "Pick an existing employee to update their role:"
+        message: "Pick an existing employee to update their manager:"
       }
     ]);
 
-    let roles = await connection.query("SELECT * FROM role");
-    let pickRole = await inquirer.prompt([
+    let managers = await connection.query("SELECT * FROM employee");
+    let pickManager = await inquirer.prompt([
       {
-        name: 'role',
+        name: 'manager',
         type: 'list',
-        choices: roles.map((thisRole) => {
+        choices: managers.map((thisManager) => {
           return {
-            name: thisRole.title,
-            value: thisRole.id
+            name: thisManager.first_name + ' ' + thisManager.last_name,
+            value: thisManager.id
           }
         }),
-        message: "Pick a new role for this employee:"
+        message: "Pick a new manager for this employee:"
       }
     ]);
 
     let result = await connection.query("UPDATE employee SET ? WHERE ?", [
-      {role_id: pickRole.role},
+      {manager_id: pickManager.manager},
       {id: pickEmployee.employee}
     ]);
 
     console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`                              ` + chalk.green.bold(`Employee Role Updated:`));
+    console.log(`                              ` + chalk.green.bold(`Employee Manager Updated:`));
     console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`Employee ID ${(pickEmployee.employee)} has new role ID ${(pickRole.role)}`);
+    console.log(`Employee ID ${(pickEmployee.employee)} now reports to manager ID ${(pickManager.manager)}`);
     console.log(chalk.yellow.bold(`====================================================================================`));
     viewAllEmployees();
 
