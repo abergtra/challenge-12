@@ -396,17 +396,30 @@ const updateRole = async () => {
       }
     ]);
 
-    let result = await connection.query("INSERT INTO employee SET ?", {
-      first_name: answer.firstName,
-      last_name: answer.lastName,
-      role_id: (answer.empRoleID),
-      manager_id: (answer.empManagerID)
-    });
+    let roles = await connection.query("SELECT * FROM role");
+    let pickRole = await inquirer.prompt([
+      {
+        name: 'role',
+        type: 'list',
+        choices: roles.map((thisRole) => {
+          return {
+            name: thisRole.title,
+            value: thisRole.id
+          }
+        }),
+        message: "Pick a new role for this employee:"
+      }
+    ]);
+
+    let result = await connection.query("UPDATE employee SET ? WHERE ?", [
+      {role_id: pickRole.role},
+      {id: pickEmployee.employee}
+    ]);
 
     console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`                              ` + chalk.green.bold(`New Employee Added:`));
+    console.log(`                              ` + chalk.green.bold(`Employee Role Updated:`));
     console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`Welcome ${(answer.firstName)} ${(answer.lastName)}!`);
+    console.log(`${(pickEmployee.name)} is now a ${(pickRole.title)}`);
     console.log(chalk.yellow.bold(`====================================================================================`));
     viewAllEmployees();
 
