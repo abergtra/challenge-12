@@ -260,7 +260,7 @@ const addDepartment = () => {
 // Function to 'Add a role'
 const addRole = async () => {
   try {
-    let departments = await connection.query("SELECT * FROM department")
+    let departments = await connection.query("SELECT * FROM department");
     let answer = await inquirer.prompt([
       {
         name: 'title',
@@ -311,6 +311,58 @@ const addRole = async () => {
 }
 
 // Function to 'Add an employee'
+const addEmployee = async () => {
+  try {
+    let managers = await connection.query("SELECT * FROM employee");
+
+    let answer = await inquirer.prompt([
+      {
+        name: 'title',
+        type: 'input',
+        message: "What is the new role's title?"
+      },
+      {
+        name: 'salary',
+        type: 'input',
+        message: "What is the new role's salary?"
+      },
+      {
+        name: 'departmentID',
+        type: 'list',
+        choices: departments.map((departmentID) => {
+          return {
+            name: departmentID.department_name,
+            value: departmentID.id
+          }
+        }),
+        message: "Pick a department to oversee this role:",
+      }
+    ]);
+
+    let pickedDept;
+    for (i = 0; i < departments.length; i++){
+      if (departments[i].department_id === answer.choice) {
+        pickedDept = departments[i];
+      };
+    }
+
+    let result = await connection.query("INSERT INTO role SET ?", {
+      title: answer.title,
+      salary: answer.salary,
+      department_id: answer.departmentID
+    })
+
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.log(`                              ` + chalk.green.bold(`New Role Added:`));
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.log(`${(answer.title).toUpperCase()}`);
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    viewAllRoles();
+  }  catch (err) {
+    console.log(err);
+    viewAllRoles();
+  };
+}
 
 // Function to 'Delete a department'
 
