@@ -419,7 +419,7 @@ const updateRole = async () => {
     console.log(chalk.yellow.bold(`====================================================================================`));
     console.log(`                              ` + chalk.green.bold(`Employee Role Updated:`));
     console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`${(pickEmployee.name)} is now a ${(pickRole.title)}`);
+    console.log(`Employee ID ${(pickEmployee.employee)} has new role ID ${(pickRole.role)}`);
     console.log(chalk.yellow.bold(`====================================================================================`));
     viewAllEmployees();
 
