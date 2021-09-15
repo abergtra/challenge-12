@@ -244,8 +244,8 @@ const addDepartment = () => {
     message: "What is the new department's name?"
   })
   .then(function(answer) {
-    const sql = `INSERT INTO department (name) VALUES ( ? )`;
-    connection.query(sql, andwer.department, function(err, res) {
+    const sql = `INSERT INTO department (department_name) VALUES (?)`;
+    connection.query(sql, answer.department, function(err, res) {
       if (err) throw err;
       console.log(chalk.yellow.bold(`====================================================================================`));
       console.log(`                              ` + chalk.green.bold(`New Department Added:`));
@@ -380,7 +380,7 @@ const deleteDepartment = async () => {
         type: 'list',
         choices: departments.map((thisDepartment) => {
           return {
-            name: thisDepartment.title,
+            name: thisDepartment.department_name,
             value: thisDepartment.id
           }
         }),
@@ -395,11 +395,11 @@ const deleteDepartment = async () => {
     console.log(chalk.yellow.bold(`====================================================================================`));
     console.log(`Department ID ${(pickDepartment.department)} has been successfully deleted.`);
     console.log(chalk.yellow.bold(`====================================================================================`));
-    viewAllEmployees();
+    viewAllDepartments();
 
   }  catch (err) {
     console.log(err);
-    viewAllEmployees();
+    viewAllDepartments();
   };
 }
 
@@ -428,11 +428,11 @@ const deleteRole = async () => {
     console.log(chalk.yellow.bold(`====================================================================================`));
     console.log(`Role ID ${(pickRole.role)} has been successfully deleted.`);
     console.log(chalk.yellow.bold(`====================================================================================`));
-    viewAllEmployees();
+    viewAllRoles();
 
   }  catch (err) {
     console.log(err);
-    viewAllEmployees();
+    viewAllRoles();
   };
 }
 
