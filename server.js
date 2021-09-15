@@ -381,39 +381,18 @@ const addEmployee = async () => {
 // Function to 'Update employee role'
 const updateRole = async () => {
   try {
-    let managers = await connection.query("SELECT * FROM employee");
-    let answer = await inquirer.prompt([
+    let employees = await connection.query("SELECT * FROM employee");
+    let pickEmployee = await inquirer.prompt([
       {
-        name: 'firstName',
-        type: 'input',
-        message: "What is the new employee's first name?"
-      },
-      {
-        name: 'lastName',
-        type: 'input',
-        message: "What is the new employee's last name?"
-      },
-      {
-        name: 'empRoleID',
+        name: 'employee',
         type: 'list',
-        choices: roles.map((empRoleID) => {
+        choices: employees.map((thisEmployee) => {
           return {
-            name: empRoleID.title,
-            value: empRoleID.id
+            name: thisEmployee.first_name + ' ' + thisEmployee.last_name,
+            value: thisEmployee.id
           }
         }),
-        message: "Pick this new employee's role ID:",
-      },
-      {
-        name: 'empManagerID',
-        type: 'list',
-        choices: managers.map((empManagerID) => {
-          return {
-            name: empManagerID.first_name + ' ' + empManagerID.last_name,
-            value: empManagerID.id
-          }
-        }),
-        message: "Pick a manager to oversee this new employee:",
+        message: "Pick an existing employee to update their role:"
       }
     ]);
 
