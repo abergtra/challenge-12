@@ -382,7 +382,7 @@ const deleteRole = async () => {
         type: 'list',
         choices: roles.map((thisRole) => {
           return {
-            name: thisRole.first_name + ' ' + thisRole.last_name,
+            name: thisRole.title,
             value: thisRole.id
           }
         }),
