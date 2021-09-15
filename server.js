@@ -258,44 +258,58 @@ const addDepartment = () => {
 }
 
 // Function to 'Add a role'
-const addRole = () => {
-  inquirer.prompt({
-    name: 'role',
-    type: 'input',
-    message: "What is the new role's name?"
-  },
-  {
-    name: 'salary',
-    type: 'input',
-    message: "What is the new role's salary?"
-  },
-  {
-    name: 'department',
-    type: 'list',
-    message: "Pick a department to oversee this role:",
-    choices: function() {
-      var choicesArray = [];
-      res.forEach(res => {
-          choicesArray.push(
-              res.name
-          );
-      })
-      return choicesArray;
+const addRole = async () => {
+  try {
+    let departments = await connection.query("SELECT * FROM department")
+    let answer = await inquirer.prompt([
+      {
+        name: 'role',
+        type: 'input',
+        message: "What is the new role's name?"
+      },
+      {
+        name: 'salary',
+        type: 'input',
+        message: "What is the new role's salary?"
+      },
+      {
+        name: 'departmentID',
+        type: 'list',
+        choices: department.map((departmentID) => {
+          return {
+            name: departmentID.department_name,
+            value: departmentID.id
+          }
+        }),
+        message: "Pick a department to oversee this role:",
+      }
+    ]);
+
+    let pickedDept;
+    for (i = 0; i < departments.length; i++){
+      if (departments[i].department_id === answer.choice) {
+        pickedDept = departments[i];
+      };
     }
-  })
-  .then(function(answer) {
-    const sql = `INSERT INTO role (name) VALUES ( ? )`;
-    connection.query(sql, andwer.role, function(err, res) {
-      if (err) throw err;
-      console.log(chalk.yellow.bold(`====================================================================================`));
-      console.log(`                              ` + chalk.green.bold(`New Role Added:`));
-      console.log(chalk.yellow.bold(`====================================================================================`));
-      console.log(`${(answer.role).toUpperCase()}.`);
-      console.log(chalk.yellow.bold(`====================================================================================`));
-      viewAllDepartments();
+
+    let result = await connection.query("INSERT INTO role SET ?", {
+      role: answer.role,
+      salary: answer.salary,
+      department_id: answer.departmentID
     })
-  })
+
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.log(`                              ` + chalk.green.bold(`New Role Added:`));
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.log(`${(answer.role).toUpperCase()}.`);
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    viewAllRoles();
+  }  catch (err) {
+    console.log(err);
+    viewAllRoles();
+  };
 }
+
 // Function to 'Add an employee'
 
 // Function to 'Delete a department'
