@@ -210,9 +210,14 @@ const viewEmployeesByDepartment = () => {
   console.log(chalk.yellow.bold(`====================================================================================`));
   console.log(`                              ` + chalk.green.bold(`Employees by Department:`));
   console.log(chalk.yellow.bold(`====================================================================================`));
-  const sql = `SELECT`;
+  const sql = `SELECT employee.first_name, employee.last_name, department.department_name AS department 
+              FROM employee 
+              LEFT JOIN role ON employee.role_id = role.id 
+              LEFT JOIN department ON role.department_id = department.id
+              ORDER BY department.department_name ASC`;
   connection.query(sql, (err, response) => {
     if (err) throw err;
+    console.table(response);
     console.log(chalk.yellow.bold(`====================================================================================`));
     promptUser();
   });
