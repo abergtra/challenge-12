@@ -263,9 +263,9 @@ const addRole = async () => {
     let departments = await connection.query("SELECT * FROM department")
     let answer = await inquirer.prompt([
       {
-        name: 'role',
+        name: 'title',
         type: 'input',
-        message: "What is the new role's name?"
+        message: "What is the new role's title?"
       },
       {
         name: 'salary',
@@ -275,7 +275,7 @@ const addRole = async () => {
       {
         name: 'departmentID',
         type: 'list',
-        choices: department.map((departmentID) => {
+        choices: departments.map((departmentID) => {
           return {
             name: departmentID.department_name,
             value: departmentID.id
@@ -293,7 +293,7 @@ const addRole = async () => {
     }
 
     let result = await connection.query("INSERT INTO role SET ?", {
-      role: answer.role,
+      title: answer.title,
       salary: answer.salary,
       department_id: answer.departmentID
     })
@@ -301,7 +301,7 @@ const addRole = async () => {
     console.log(chalk.yellow.bold(`====================================================================================`));
     console.log(`                              ` + chalk.green.bold(`New Role Added:`));
     console.log(chalk.yellow.bold(`====================================================================================`));
-    console.log(`${(answer.role).toUpperCase()}.`);
+    console.log(`${(answer.title).toUpperCase()}`);
     console.log(chalk.yellow.bold(`====================================================================================`));
     viewAllRoles();
   }  catch (err) {
