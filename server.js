@@ -363,7 +363,7 @@ const addEmployee = async () => {
     console.log(`Welcome ${(answer.firstName)} ${(answer.lastName)}!`);
     console.log(chalk.yellow.bold(`====================================================================================`));
     viewAllEmployees();
-    
+
   }  catch (err) {
     console.log(err);
     viewAllEmployees();
@@ -379,8 +379,64 @@ const addEmployee = async () => {
 // Function to 'Update employee manager'
 
 // Function to 'Update employee role'
+const updateRole = async () => {
+  try {
+    let managers = await connection.query("SELECT * FROM employee");
+    let answer = await inquirer.prompt([
+      {
+        name: 'firstName',
+        type: 'input',
+        message: "What is the new employee's first name?"
+      },
+      {
+        name: 'lastName',
+        type: 'input',
+        message: "What is the new employee's last name?"
+      },
+      {
+        name: 'empRoleID',
+        type: 'list',
+        choices: roles.map((empRoleID) => {
+          return {
+            name: empRoleID.title,
+            value: empRoleID.id
+          }
+        }),
+        message: "Pick this new employee's role ID:",
+      },
+      {
+        name: 'empManagerID',
+        type: 'list',
+        choices: managers.map((empManagerID) => {
+          return {
+            name: empManagerID.first_name + ' ' + empManagerID.last_name,
+            value: empManagerID.id
+          }
+        }),
+        message: "Pick a manager to oversee this new employee:",
+      }
+    ]);
 
-// Function to 'Exit'
+    let result = await connection.query("INSERT INTO employee SET ?", {
+      first_name: answer.firstName,
+      last_name: answer.lastName,
+      role_id: (answer.empRoleID),
+      manager_id: (answer.empManagerID)
+    });
+
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.log(`                              ` + chalk.green.bold(`New Employee Added:`));
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    console.log(`Welcome ${(answer.firstName)} ${(answer.lastName)}!`);
+    console.log(chalk.yellow.bold(`====================================================================================`));
+    viewAllEmployees();
+
+  }  catch (err) {
+    console.log(err);
+    viewAllEmployees();
+  };
+}
+
 
 
 
