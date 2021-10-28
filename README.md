@@ -1,5 +1,5 @@
 # Project Title
-Challenge 12 
+employee-tracker
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 # Description
